@@ -1,0 +1,22 @@
+.axis text, body {
+	font: 12pt sans-serif;
+	font-family: 'Poiret One', cursive;
+}
+
+.axis path, .axis line {
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
+}
+.y.axis path, .y.axis line {
+	stroke: none;
+}
+
+rect{
+	fill: blue;
+}
+
+.container {
+	text-align: center;
+	margin: 0 auto;
+}

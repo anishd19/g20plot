@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>jsd3exercise</title>
+	<script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+	<div class="container">
+		<h2> Plot of G20 countries for the year 2013 <h2>
+		<button onClick="renderPop()">Population</button>
+		<button onClick="renderGDP()">GDP</button>
+		<button onClick="renderPP()">Purchasing Power</button>
+	</div>
+    <script>
+		var outerWidth = 1300;
+		var outerHeight = 500;
+		var margin = { left: 145, top: 0, right: 0, bottom: 80 };
+		var barPadding = 0.2;
+
+		var xColumn;
+		var xColumnLabel;
+		var yColumn = "country";
+
+		var innerWidth  = outerWidth  - margin.left - margin.right;
+		var innerHeight = outerHeight - margin.top  - margin.bottom;
+
+		var svg = d3.select("body").append("svg")
+		.attr("width",  outerWidth)
+		.attr("height", outerHeight);
+		var g = svg.append("g")
+		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		var xAxisG = g.append("g")
+		.attr("class", "x axis")
+		.attr("transform", "translate(0," + innerHeight + ")");
+		var xAxisLabel = xAxisG.append("text")
+		.style("text-anchor", "middle")
+		.attr("x", innerWidth / 2)
+		.attr("y", "45px")
+		.attr("class", "label")
+		.text(xColumnLabel);
+		var yAxisG = g.append("g")
+		.attr("class", "y axis");
+
+		var xScale = d3.scale.linear().range([0, innerWidth]);
+		var yScale = d3.scale.ordinal().rangeBands([0, innerHeight], barPadding);
+
+		var xAxis = d3.svg.axis().scale(xScale).orient("bottom")
+			.ticks(20)
+			.tickFormat(d3.format("s"));
+		var yAxis = d3.svg.axis().scale(yScale).orient("left")
+		.outerTickSize(0);
+
+		function render(data, xColumn){
+		
+		data.sort(function(a, b){
+			return b[xColumn] - a[xColumn];
+		});
+
+		var arr = data.map( function (d){ 
+			return d[xColumn]; 
+		});
+
+		xScale.domain([0, Math.max.apply( null, arr )]);
+		yScale.domain(data.map( function (d){ return d[yColumn]; }));
+
+		xAxisG.call(xAxis);
+		yAxisG.call(yAxis);
+
+		var bars = g.selectAll("rect").data(data);
+		bars.enter().append("rect")
+			.attr("height", yScale.rangeBand());
+		bars
+			 .attr("x", 0)
+			 .attr("y", function (d){ return yScale(d[yColumn]); })
+			 .attr("width", function (d){ return xScale(d[xColumn]); });
+			 
+		bars.exit().remove();
+		}
+
+		function renderPop(){
+			
+			xColumnLabel = "Population in Million";
+			xAxisLabel.text(xColumnLabel);
+			d3.json("assets/datafile.json", function(err, json){
+				if(err) throw err;
+				render(json, "population");
+				console.log(json);
+			});
+		}
+		
+		function renderGDP(){
+			xColumnLabel = "GDP in Billion USD";
+			xAxisLabel.text(xColumnLabel);
+
+			d3.json("assets/datafile.json", function(err, json){
+				if(err) throw err;
+				render(json, "gdp");
+				console.log(json);
+			});
+		}
+		
+		function renderPP(){
+			xColumnLabel = "Purchasing Power in Billions";
+			xAxisLabel.text(xColumnLabel);
+
+			d3.json("assets/datafile.json", function(err, json){
+				if(err) throw err;
+				render(json, "purchasing_power");
+				console.log(json);
+			});
+		}
+		
+	</script>
+  </body>
+</html>
