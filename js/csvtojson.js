@@ -49,10 +49,10 @@ var parser = function (inFile, key, outFile){
 				if(index == arr.length - 1)
 					buffer += "}";
 			});
-		}
-		
-		if(i != l-1)
+			
+			if(i != l-1)
 			buffer += ",";
+		}
 	}
 	
 	buffer += "]";
