@@ -1,0 +1,22 @@
+{
+  "name": "g20plot",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anishd19/g20plot.git"
+  },
+  "keywords": [
+    "d3.js"
+  ],
+  "author": "Anish Dhamodaran",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/anishd19/g20plot/issues"
+  },
+  "homepage": "https://github.com/anishd19/g20plot#readme"
+}
